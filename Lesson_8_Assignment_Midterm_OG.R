@@ -117,6 +117,7 @@ mvs <- read.csv("tmdb_5000_movies.csv")
 
 
 #17. How many movies use the word "America" in its overview? Save the answer as murica.
+# Note that "American" and "America's" should not count as using the word "America".
 # (https://campus.datacamp.com/courses/intermediate-r/chapter-5-utilities?ex=8)
 
 
@@ -165,6 +166,6 @@ mvs <- read.csv("tmdb_5000_movies.csv")
 
 
 #22. Edit the genres variable of movies2 so that it contains only a list of the 
-# genres without all the other symbols and numbers. The first line of code has been 
-# provided for you.
+# genres without all the other symbols and numbers. It may contain commas and 
+# spaces. The first line of code has been provided for you.
 movies2$genres <-  gsub(pattern = '\\[\\{"id":' , replacement = '', movies2$genres)

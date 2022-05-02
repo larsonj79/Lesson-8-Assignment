@@ -22,6 +22,29 @@ budghistkey <- ggplot(movies, aes(x = budget)) +
 budgboxkey <- ggplot(movies, aes(y = budget)) +
   geom_boxplot()
 
+rtboxkey <- ggplot(movies, aes(y = runtime)) +
+  geom_boxplot()
+
+votescatterkey <- ggplot(movies, aes(x = vote_count, y = vote_average)) +
+  geom_point()
+
+agescatterkey <- ggplot(movies, aes(x = release_date, y = vote_average)) +
+  geom_point()
+
+agescatterbkey <- movies %>% 
+  filter(release_date < "2017-01-01") %>% 
+  ggplot(aes(x = release_date, y = vote_average)) +
+  geom_point()
+
+histagekey <- movies %>% 
+  filter(release_date < "2017-01-01") %>% 
+  ggplot(aes(x = release_date)) +
+  geom_histogram(bins = 49)
+
+topmovieplotkey <- ggplot(topmovie, aes(x = release_year, y = toprev)) +
+  geom_line()
+
+
 
 test_that("Q2 (visible)", {
   
@@ -69,135 +92,212 @@ test_that("Q6 (visible)", {
 })
 
 
-
-
-test_that("Q4 (visible)", {
+test_that("Q7 plot (visible)", {
   
-  expect_equal(sum(highimp$GOOGLE_PROSPECTING_IMPRESSIONS), 3187, tolerance = 1)
-  expect_equal(sum(highimp$GOOGLE_RETARGETING_IMPRESSIONS), 4890, tolerance = 1)
-  expect_equal(sum(highimp$FACEBOOK_PROSPECTING_IMPRESSIONS), 5826, tolerance = 1)
-
-})
-
-test_that("Q5 (visible)", {
+  expect_equal(rtbox$layers[[1]], rtboxkey$layers[[1]])
+  expect_equal(rtbox$scales, rtboxkey$scales)
+  expect_equal(rtbox$mapping, rtboxkey$mapping)
+  expect_equal(rtbox$labels, rtboxkey$labels)
   
-  expect_true(names(fexp2)[2] == "DMA_NAME")
-  expect_true(names(fexp2)[4] == "GP")
-  expect_equal(sum(fexp2$GP), 20517.62, tolerance = 1)
-  expect_equal(sum(fexp2$FR), 21337.17, tolerance = 1)
-  expect_equal(sum(fexp2$WebSales), 1709670, tolerance = 1)
-  expect_equal(dim(fexp2)[2], 11)
-              
-})
-  
-test_that("Q6 (visible)", {
-  
-  expect_true(names(fexp4)[12] == "GPTot")
-  expect_true(names(fexp4)[13] == "FPTot")
-  expect_equal(sum(fexp4$GPTot), 143623.3, tolerance = 1)
-  expect_equal(sum(fexp4$FPTot), 268732.6, tolerance = 1)
-  expect_equal(sum(fexp4$WebSales), 1709670, tolerance = 1)
-
-})
-
-test_that("Q7 (visible)", {
-  
-  expect_true(names(fexp4)[14] == "GPPercTot")
-  expect_true(names(fexp4)[15] == "FPPercTot")
-  expect_equal(sum(fexp4$GPPercTot), 630, tolerance = 1)
-  expect_equal(sum(!is.na(fexp4$FPPercTot)), 4046, tolerance = 1)
-  expect_equal(sum(fexp4$WebSales), 1709670, tolerance = 1)
-  
-})
-
-test_that("Q8 data (visible)", {
-  
-  expect_equal(sum(gppercplot$data$GP), 3151.51, tolerance = 1)
-  expect_equal(sum(gppercplot$data$GPPercTot), 9, tolerance = 1e-1)
-
 })
 
 test_that("Q8 plot (visible)", {
   
-  expect_equal(gppercplot$layers[[1]], gppercplotkey$layers[[1]])
-  expect_equal(gppercplot$scales, gppercplotkey$scales)
-  expect_equal(gppercplot$mapping, gppercplotkey$mapping)
-  expect_equal(gppercplot$labels, gppercplotkey$labels)
+  expect_equal(votescatter$layers[[1]], votescatterkey$layers[[1]])
+  expect_equal(votescatter$scales, votescatterkey$scales)
+  expect_equal(votescatter$mapping, votescatterkey$mapping)
+  expect_equal(votescatter$labels, votescatterkey$labels)
   
 })
 
-test_that("Q10 data (visible)", {
+test_that("Q9 plot (visible)", {
   
-  expect_equal(sum(fppercplot$data$FP), 5644.59, tolerance = 1)
-  expect_equal(sum(fppercplot$data$FPPercTot), 9, tolerance = 1e-1)
+  expect_equal(agescatter$layers[[1]], agescatterkey$layers[[1]])
+  expect_equal(agescatter$scales, agescatterkey$scales)
+  expect_equal(agescatter$mapping, agescatterkey$mapping)
+  expect_equal(agescatter$labels, agescatterkey$labels)
   
 })
 
 test_that("Q10 plot (visible)", {
   
-  expect_equal(fppercplot$layers[[1]], fppercplotkey$layers[[1]])
-  expect_equal(fppercplot$scales, fppercplotkey$scales)
-  expect_equal(fppercplot$mapping, fppercplotkey$mapping)
-  expect_equal(fppercplot$labels, fppercplotkey$labels)
+  expect_equal(agescatterb$layers[[1]], agescatterbkey$layers[[1]])
+  expect_equal(agescatterb$scales, agescatterbkey$scales)
+  expect_equal(agescatterb$mapping, agescatterbkey$mapping)
+  expect_equal(agescatterb$labels, agescatterbkey$labels)
   
 })
 
-test_that("Q11 summarize (visible)", {
+test_that("Q11 plot (visible)", {
   
-  expect_equal(dim(gppercbyweek)[1], 60, tolerance = 1e-3) 
-  expect_equal(sum(gppercbyweek$GPWeekly), 20517.62, tolerance = 1) 
+  expect_equal(histage$layers[[1]], histagekey$layers[[1]])
+  expect_equal(histage$scales, histagekey$scales)
+  expect_equal(histage$mapping, histagekey$mapping)
+  expect_equal(histage$labels, histagekey$labels)
   
-})
-
-test_that("Q11 mutate (visible)", {
-  
-  expect_equal(dim(gppercbyweek)[2], 5, tolerance = 1e-3) 
-  expect_equal(sum(gppercbyweek$GPTot), 61552.86, tolerance = 1) 
-  expect_equal(sum(gppercbyweek$GPPerc), 20, tolerance = 1e-2) 
-
 })
 
 test_that("Q12 (visible)", {
   
-  expect_equal(dim(gppercclean)[2], 3, tolerance = 1e-3) 
-  expect_equal(sum(gppercclean$GPPerc), 20, tolerance = 1e-2) 
-
+  expect_true(dim(movies)[1] == 4803)
+  expect_true(dim(movies)[2] == 18)
+  expect_true(class(movies$release_year) == "numeric")
+  expect_equal(movies$release_year[3], 2015, tolerance = 1e-2)
+  expect_equal(movies$release_year[8], 2015, tolerance = 1e-2)
+  expect_equal(movies$release_month[4], "07")
+  
 })
 
 test_that("Q13 (visible)", {
   
-  expect_equal(dim(allchanperc)[2], 7, tolerance = 1e-3) 
-  expect_equal(sum(allchanperc$GPPerc), 20, tolerance = 1e-2) 
-  expect_equal(sum(allchanperc$GBPerc), 20, tolerance = 1e-2) 
-  expect_equal(sum(allchanperc$FRPerc), 20, tolerance = 1e-2) 
-  expect_equal(allchanperc$FPPerc[2], .3932765, tolerance = 1e-3)
-  
-})
-
-test_that("Q15 Dimensions (visible)", {
-  
-  expect_equal(dim(wkchange)[1],20, tolerance = 1e-3) 
-  expect_equal(dim(wkchange)[2], 6, tolerance = 1e-3) 
+  expect_true(dim(topmovie)[1] == 17)
+  expect_equal(topmovie$toprev[3], 926475550, tolerance = 1e-2)
+  expect_equal(topmovie$toprev[4], 1118888979, tolerance = 1e-2)
+  expect_equal(topmovie$toprev[7], 1065659812, tolerance = 1e-2)
 
 })
 
-test_that("Q15 Values (visible)", {
+test_that("Q14 plot (visible)", {
   
-  expect_equal(sum(wkchange$GPChange), 2.424282, tolerance = 1e-3) 
-  expect_equal(sum(wkchange$GBChange), -.7228266, tolerance = 1e-3) 
-  expect_equal(sum(wkchange$FRChange), 1.384375, tolerance = 1e-3) 
-  expect_equal(wkchange$FPChange[2], .445777, tolerance = 1e-3)
+  expect_equal(topmovieplot$layers[[1]], topmovieplotkey$layers[[1]])
+  expect_equal(topmovieplot$scales, topmovieplotkey$scales)
+  expect_equal(topmovieplot$mapping, topmovieplotkey$mapping)
+  expect_equal(topmovieplot$labels, topmovieplotkey$labels)
+  
+})
+
+test_that("Q15 (visible)", {
+  
+  expect_true(dim(revbymonth)[1] == 12)
+  expect_equal(revbymonth$meanrev[3], 80728040, tolerance = 1e-2)
+  expect_equal(revbymonth$meanrev[11], 132190472, tolerance = 1e-2)
+  expect_equal(revbymonth$mdnrev[5], 21334266, tolerance = 1e-2)
+  expect_equal(revbymonth$mdnrev[12], 43545364, tolerance = 1e-2)
   
 })
 
 test_that("Q16 (visible)", {
   
-  expect_equal(ldgr, 16, tolerance = 1e-3) 
+  expect_true(dim(percrevbyyear)[1] == 17)
+  expect_equal(percrevbyyear$totrev[3], 14609857556, tolerance = 1e-2)
+  expect_equal(percrevbyyear$totrev[11], 20348574768, tolerance = 1e-2)
+  expect_equal(percrevbyyear$toprev[15], 1091405097, tolerance = 1e-2)
+  expect_equal(percrevbyyear$toprev[17], 1153304495, tolerance = 1e-2)
+  expect_equal(percrevbyyear$percrevtop[11], 0.05243462, tolerance = 1e-4)
+  expect_equal(percrevbyyear$percrevtop[16], 0.06645564, tolerance = 1e-4)
   
 })
 
 test_that("Q17 (visible)", {
   
-  expect_equal(ldfp, 10, tolerance = 1e-3) 
+  expect_equal(murica, 35, tolerance = 1e-1)
   
 })
+
+test_that("Q18 (visible)", {
+  
+  expect_equal(titlech, 261, tolerance = 1e-1)
+  
+})
+
+test_that("Q19 Part 1 (visible)", {
+  
+  expect_true(dim(movies2)[1] == 4802)
+  expect_equal(movies2$underperformed[3], FALSE)
+  expect_equal(movies2$underperformed[434], TRUE)
+  expect_equal(movies2$underperformed[1241], TRUE)
+  expect_equal(movies2$underperformed[1628], TRUE)
+  expect_equal(movies2$underperformed[4639], TRUE)
+  
+})
+
+test_that("Q19 Part 2 (visible)", {
+  
+  expect_equal(movies2$underperformed[454], TRUE)
+  expect_equal(movies2$underperformed[2639], TRUE)
+  expect_equal(movies2$underperformed[3367], TRUE)
+  expect_equal(movies2$underperformed[4700], TRUE)
+
+})
+
+test_that("Q20 (visible)", {
+  
+  expect_equal(numunder, 156, tolerance = 1e-1)
+  
+})
+
+
+test_that("Q21 Extra Credit 1a (visible)", {
+  
+  expect_equal(movies2$underperfmonth[736], TRUE)
+  expect_equal(movies2$underperfmonth[747], TRUE)
+  expect_equal(movies2$underperfmonth[863], TRUE)
+  expect_equal(movies2$underperfmonth[954], TRUE)
+  
+})
+
+test_that("Q21 Extra Credit 1b (visible)", {
+  
+  expect_equal(movies2$underperfmonth[980], TRUE)
+  expect_equal(movies2$underperfmonth[1029], TRUE)
+  expect_equal(movies2$underperfmonth[1112], TRUE)
+  expect_equal(movies2$underperfmonth[1398], TRUE)
+  
+})
+
+test_that("Q21 Extra Credit 1c (visible)", {
+  
+  expect_equal(movies2$underperfmonth[1609], TRUE)
+  expect_equal(movies2$underperfmonth[1643], TRUE)
+  expect_equal(movies2$underperfmonth[2213], TRUE)
+  expect_equal(movies2$underperfmonth[2308], TRUE)
+  
+})
+
+test_that("Q21 Extra Credit 1d (visible)", {
+  
+  expect_equal(movies2$underperfmonth[2628], TRUE)
+  expect_equal(movies2$underperfmonth[2782], TRUE)
+  expect_equal(movies2$underperfmonth[4078], TRUE)
+  expect_equal(movies2$underperfmonth[4758], TRUE)
+  
+})
+
+test_that("Q22 Extra Credit 2a (visible)", {
+  
+  expect_true(grepl("Action", movies2$genres[1]) == TRUE)
+  expect_true(grepl("Adventure", movies2$genres[1]) == TRUE)
+  expect_true(grepl("Fantasy", movies2$genres[1]) == TRUE)
+  expect_true(grepl("Science Fiction", movies2$genres[1]) == TRUE)
+  expect_true(grepl("}", movies2$genres[1]) == FALSE)
+  
+})
+
+test_that("Q22 Extra Credit 2b (visible)", {
+  
+  expect_true(grepl("Animation", movies2$genres[7]) == TRUE)
+  expect_true(grepl("Family", movies2$genres[7]) == TRUE)
+  expect_true(grepl("}", movies2$genres[1]) == FALSE)
+  
+})
+
+test_that("Q22 Extra Credit 2c (visible)", {
+  
+  expect_true(grepl("Action", movies2$genres[13]) == TRUE)
+  expect_true(grepl("Adventure", movies2$genres[13]) == TRUE)
+  expect_true(grepl("Fantasy", movies2$genres[13]) == TRUE)
+  expect_true(grepl("}", movies2$genres[13]) == FALSE)
+  
+})
+
+test_that("Q22 Extra Credit 2d (visible)", {
+  
+  expect_true(grepl("Action", movies2$genres[14]) == TRUE)
+  expect_true(grepl("Adventure", movies2$genres[14]) == TRUE)
+  expect_true(grepl("Western", movies2$genres[14]) == TRUE)
+  expect_true(grepl("28", movies2$genres[14]) == FALSE)
+  expect_true(grepl("}", movies2$genres[14]) == FALSE)
+  
+})
+
+

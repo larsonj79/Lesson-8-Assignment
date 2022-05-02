@@ -79,6 +79,8 @@ votescatter <- ggplot(movies, aes(x = vote_count, y = vote_average)) +
 agescatter <- ggplot(movies, aes(x = release_date, y = vote_average)) +
   geom_point()
 
+#10. The database includes some movies with anticipated release dates far in the future. 
+# Re-do the plot above without movies released after Dec 31, 2016. Save it as agescatterb.
 agescatterb <- movies %>% 
   filter(release_date < "2017-01-01") %>% 
   ggplot(aes(x = release_date, y = vote_average)) +
@@ -137,7 +139,9 @@ topmovieplot <- ggplot(topmovie, aes(x = release_year, y = toprev)) +
 # the report to movies released from 2000 to 2016. Name the variables meanrev and mdnrev, 
 # respectively. (The report should be by month, not by year and month, so it should only 
 # have 12 rows.) Call the report revbymonth.
-revbymonth <- movies %>% 
+revbymonth <- movies %>%
+  filter(release_date < "2017-01-01",
+         release_date > "1999-12-31") %>% 
   group_by(release_month) %>% 
   summarize(meanrev = mean(revenue),
             mdnrev = median(revenue)) %>% 
@@ -151,19 +155,25 @@ revbymonth <- movies %>%
 # highest-revenue movie of that year (name it toprev), and (3) the percentage of the total 
 # revenues consisting of the highest-revenue movie (name it percrevtop). Call the report 
 # percrevbyyear.
-
+percrevbyyear <- movies %>% 
+  filter(release_date < "2017-01-01",
+         release_date > "1999-12-31") %>% 
+  group_by(release_year) %>% 
+  summarize(totrev = sum(revenue),
+            toprev = max(revenue),
+            percrevtop = toprev / totrev)
 
 #17. How many movies use the word "America" in its overview? Save the answer as murica.
 # Note that "American" and "America's" should not count as using the word "America".
 # (https://campus.datacamp.com/courses/intermediate-r/chapter-5-utilities?ex=8)
 americamovie <- movies %>% 
-  filter(grepl(" America ", overview))
+  filter(grepl("America ", overview))
 
 murica <- nrow(americamovie)
 
 #18. How many movies had a title change (i.e., the title is different from the original 
 # title)? Save the answer as titlech.
-titelch <- sum(as.character(movies$original_title) != as.character(movies$title))
+titlech <- sum(as.character(movies$original_title) != as.character(movies$title))
 
 #19. Create a data frame movies2 that is a copy of the movies data frame but removes 
 # the movie that has a missing release_month. The studio wants to compile a list of 
@@ -225,8 +235,8 @@ for(i in 1:nrow(movies2)) {
 
 
 #22. Edit the genres variable of movies2 so that it contains only a list of the 
-# genres without all the other symbols and numbers. The first line of code has been 
-# provided for you.
+# genres without all the other symbols and numbers. It may contain commas and 
+# spaces. The first line of code has been provided for you.
 movies2$genres <-  gsub(pattern = '\\[\\{"id":' , replacement = '', movies2$genres)
 movies2$genres <-  gsub('\\[','', movies2$genres)
 movies2$genres <-  gsub('\\]','', movies2$genres)
