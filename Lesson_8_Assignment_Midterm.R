@@ -6,7 +6,6 @@
 # save them in this file for your assignment.
 
 # Do not change these four lines or GradeScope will not work
-library(stringr)
 library(dplyr)
 library(ggplot2)
 mvs <- read.csv("tmdb_5000_movies.csv")
