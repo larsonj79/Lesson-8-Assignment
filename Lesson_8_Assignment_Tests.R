@@ -6,8 +6,8 @@ library(testthat)
 
 library(dplyr)
 library(ggplot2)
-mvs <- read.csv("tmdb_5000_movies.csv")
-movieskey <- mvs[, c("title","id", "status","release_date","budget","revenue", "runtime",
+mvskey <- read.csv("tmdb_5000_movies.csv")
+movieskey <- mvskey[, c("title","id", "status","release_date","budget","revenue", "runtime",
                   "overview", "tagline","genres", "original_language", "original_title", 
                   "popularity", "vote_average", "vote_count", "homepage")]
 movieskey$release_date <- as.Date(movies$release_date, format = "%m/%d/%Y")
