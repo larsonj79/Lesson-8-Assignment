@@ -7,41 +7,47 @@ library(testthat)
 library(dplyr)
 library(ggplot2)
 mvs <- read.csv("tmdb_5000_movies.csv")
-movies <- mvs[, c("title","id", "status","release_date","budget","revenue", "runtime",
+movieskey <- mvs[, c("title","id", "status","release_date","budget","revenue", "runtime",
                   "overview", "tagline","genres", "original_language", "original_title", 
                   "popularity", "vote_average", "vote_count", "homepage")]
-movies$release_date <- as.Date(movies$release_date, format = "%m/%d/%Y")
-movies <- movies %>% 
+movieskey$release_date <- as.Date(movies$release_date, format = "%m/%d/%Y")
+movieskey <- movieskey %>% 
   mutate(release_year = format(release_date, "%Y"),
          release_month = format(release_date, "%m"))
-movies$release_year <- as.numeric(movies$release_year)
+movieskey$release_year <- as.numeric(movieskey$release_year)
 
-budghistkey <- ggplot(movies, aes(x = budget)) +
+budghistkey <- ggplot(movieskey, aes(x = budget)) +
   geom_histogram()
 
-budgboxkey <- ggplot(movies, aes(y = budget)) +
+budgboxkey <- ggplot(movieskey, aes(y = budget)) +
   geom_boxplot()
 
-rtboxkey <- ggplot(movies, aes(y = runtime)) +
+rtboxkey <- ggplot(movieskey, aes(y = runtime)) +
   geom_boxplot()
 
-votescatterkey <- ggplot(movies, aes(x = vote_count, y = vote_average)) +
+votescatterkey <- ggplot(movieskey, aes(x = vote_count, y = vote_average)) +
   geom_point()
 
-agescatterkey <- ggplot(movies, aes(x = release_date, y = vote_average)) +
+agescatterkey <- ggplot(movieskey, aes(x = release_date, y = vote_average)) +
   geom_point()
 
-agescatterbkey <- movies %>% 
+agescatterbkey <- movieskey %>% 
   filter(release_date < "2017-01-01") %>% 
   ggplot(aes(x = release_date, y = vote_average)) +
   geom_point()
 
-histagekey <- movies %>% 
+histagekey <- movieskey %>% 
   filter(release_date < "2017-01-01") %>% 
   ggplot(aes(x = release_date)) +
   geom_histogram(bins = 49)
 
-topmovieplotkey <- ggplot(topmovie, aes(x = release_year, y = toprev)) +
+topmoviekey <- movieskey %>% 
+  filter(release_date < "2017-01-01",
+         release_date > "1999-12-31") %>% 
+  group_by(release_year) %>% 
+  summarize(toprev = max(revenue))
+
+topmovieplotkey <- ggplot(topmoviekey, aes(x = release_year, y = toprev)) +
   geom_line()
 
 
