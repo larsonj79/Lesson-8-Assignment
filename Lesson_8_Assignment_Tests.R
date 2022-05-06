@@ -10,7 +10,7 @@ mvskey <- read.csv("tmdb_5000_movies.csv")
 movieskey <- mvskey[, c("title","id", "status","release_date","budget","revenue", "runtime",
                   "overview", "tagline","genres", "original_language", "original_title", 
                   "popularity", "vote_average", "vote_count", "homepage")]
-movieskey$release_date <- as.Date(movies$release_date, format = "%m/%d/%Y")
+movieskey$release_date <- as.Date(movieskey$release_date, format = "%m/%d/%Y")
 movieskey <- movieskey %>% 
   mutate(release_year = format(release_date, "%Y"),
          release_month = format(release_date, "%m"))
